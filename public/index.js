@@ -34,13 +34,34 @@ async function main() {
     new Chart(timeChartCanvas.getContext('2d'), {
         type: 'line',
         data: {
-            labels: stocks['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'].values.map(value => value.datetime),
+            labels: stocks[0].values.map(value => value.datetime),
             datasets: stocks.map(stock => ({
                 label: stock.map.symbol,
                 backgroundColor: getColor(stock.meta.symbol),
                 borderColor: getColor(stock.meta.symbol),
                 data: stock.values.map(value => parseFloat(value.high))
             }))
+        }
+    });
+
+    //High Chart
+    new Chart(highestPriceChartCanvas.getContext('2d'), {
+        type: 'bar',
+        data {
+            labels: stocks.map(stock => stock.meta.symbol),
+            datasets: [{
+                label: 'Highest',
+                backgroundColor: stocks.map(stock => (
+                    getColor(stock.meta.symbol)
+                )),
+                borderColor: stocks.map(stock => (
+                    getColor(stock.meta.symbol)
+                )),
+                data: stocks.map(stock => (
+                    findHighest(stock.values)
+                ))
+            
+        }]
         }
     });
 
@@ -65,7 +86,23 @@ async function main() {
          });
     }
     
+function findHighest(values) {
+    let highest = 0;
+    values.forEach(value => {
+        if (parseFloat(value.high) > highest) {
+            highest = value.high
+        }
+    })
+    return highest
+    }
+
+function calculateAverage(values) {
+    let total = 0;
+    values.forEach(value => {
+        total += parseFloat(value.high)
+    })
+    return total /values.length
+    }
 
 
-
-main(ae84d952fe854f59b6b92afce7ab48ac)
+main()
